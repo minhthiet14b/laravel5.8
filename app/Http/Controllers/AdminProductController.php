@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Components\Recusive;
+use App\Http\Requests\Request\ProductsRequest;
 use App\Product;
 use App\ProductImage;
 use App\ProductTag;
@@ -41,13 +42,12 @@ class AdminProductController extends Controller
     }
     public function getCategory($parentId){
         $data = $this->category->all();
-        $recusive = new Recusive($data);
-        $htmlOption = $recusive->categoryRecusive($parentId);
+        $recursive = new Recusive($data);
+        $htmlOption = $recursive->categoryRecursive($parentId);
         return $htmlOption;
     }
-    public function store(Request $request)
+    public function store(ProductsRequest $request)
     {
-
         try{
             DB::beginTransaction();
             $dataProductCreate = [
@@ -57,10 +57,10 @@ class AdminProductController extends Controller
                 'user_id' => auth()->id(),
                 'category_id' => $request->category_id,
             ];
-            $dataUploadFuatureImage = $this->storageTraitUpload($request, 'feature_img_path', 'product');
-            if(!empty($dataUploadFuatureImage)){
-                $dataProductCreate['feature_image_name'] = $dataUploadFuatureImage['file_name'];
-                $dataProductCreate['feature_img_path'] = $dataUploadFuatureImage['file_path'];
+            $dataUploadFeatureImage = $this->storageTraitUpload($request, 'feature_img_path', 'product');
+            if(!empty($dataUploadFeatureImage)){
+                $dataProductCreate['feature_image_name'] = $dataUploadFeatureImage['file_name'];
+                $dataProductCreate['feature_img_path'] = $dataUploadFeatureImage['file_path'];
             }
             $product = $this->product->create($dataProductCreate);
             // dd($dataProductCreate);
@@ -75,20 +75,21 @@ class AdminProductController extends Controller
                     ]);
                 }
             }
-
-            // insert tags to product_tag
-            foreach($request->tags as $tagItem){
-                //inser to tags
-                $tagInstance = $this->tag->firstOrCreate(['name' => $tagItem]);
-                $tagIds[] = $tagInstance->id;
+            if($request->tags){
+                foreach($request->tags as $tagItem){
+                    //insert to tags
+                    $tagInstance = $this->tag->firstOrCreate(['name' => $tagItem]);
+                    $tagIds[] = $tagInstance->id;
+                }
+                $product->tags()->attach($tagIds);
             }
-            $product->tags()->attach($tagIds);
+            // insert tags to product_tag
             DB::commit();
             return redirect()->route('product.index');
         }
         catch(\Exception $exception){
             DB::rollBack();
-            Log::error('Messager: '.$exception->getMessage().'Line: '. $exception->getFile());
+            Log::error('Messenger: '.$exception->getMessage().'File: '.$exception->getFile().'Line: '. $exception->getLine());
         }
     }
 
@@ -97,7 +98,7 @@ class AdminProductController extends Controller
         $htmlOption = $this->getCategory($product->category_id);
         return view('admin.product.edit',compact('htmlOption','product'));
     }
-    public function update($id, Request $request){
+    public function update($id, ProductsRequest $request){
         try{
             DB::beginTransaction();
             $dataProductUpdate = [
@@ -107,10 +108,10 @@ class AdminProductController extends Controller
                 'user_id' => auth()->id(),
                 'category_id' => $request->category_id,
             ];
-            $dataUploadFuatureImage = $this->storageTraitUpload($request, 'feature_img_path', 'product');
-            if(!empty($dataUploadFuatureImage)){
-                $dataProductUpdate['feature_image_name'] = $dataUploadFuatureImage['file_name'];
-                $dataProductUpdate['feature_img_path'] = $dataUploadFuatureImage['file_path'];
+            $dataUploadFeatureImage = $this->storageTraitUpload($request, 'feature_img_path', 'product');
+            if(!empty($dataUploadFeatureImage)){
+                $dataProductUpdate['feature_image_name'] = $dataUploadFeatureImage['file_name'];
+                $dataProductUpdate['feature_img_path'] = $dataUploadFeatureImage['file_path'];
             }
             $product = $this->product->find($id)->update($dataProductUpdate);
             $product = $this->product->find($id);
@@ -130,7 +131,7 @@ class AdminProductController extends Controller
 
             // insert tags to product_tag
             foreach($request->tags as $tagItem){
-                //inser to tags
+                //insert to tags
                 $tagInstance = $this->tag->firstOrCreate(['name' => $tagItem]);
                 $tagIds[] = $tagInstance->id;
             }
@@ -140,7 +141,7 @@ class AdminProductController extends Controller
         }
         catch(\Exception $exception){
             DB::rollBack();
-            Log::error('Messager: '.$exception->getMessage().'Line: '. $exception->getFile());
+            Log::error('Messenger: '.$exception->getMessage().'File: '.$exception->getFile().'Line: '. $exception->getLine());
         }
     }
     public function delete($id){
@@ -151,7 +152,7 @@ class AdminProductController extends Controller
                 'message' => 'success'
             ], 200);
         }catch(\Exception $exception){
-            Log::error('Messager: '.$exception->getMessage().'Line: '. $exception->getFile());
+            Log::error('Messenger: '.$exception->getMessage().'Line: '. $exception->getFile());
             return response()->json([
                 'code' => 500,
                 'message' => 'fail'

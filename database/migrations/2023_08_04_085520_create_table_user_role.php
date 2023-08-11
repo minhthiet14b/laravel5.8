@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddComlumDeleteAtTableCategories extends Migration
+class CreateTableUserRole extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddComlumDeleteAtTableCategories extends Migration
      */
     public function up()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->softDeletes();
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->id();
+            $table->integer('user_id');
+            $table->integer('role_id');
+            $table->timestamps();
         });
     }
 
@@ -25,7 +28,6 @@ class AddComlumDeleteAtTableCategories extends Migration
      */
     public function down()
     {
-        Schema::table('categories', function (Blueprint $table) {
-        });
+        Schema::dropIfExists('role_user');
     }
 }

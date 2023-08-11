@@ -24,7 +24,22 @@ class ProductsRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|unique:products|max:255|min:10',
+            'price' => 'required',
+            'category_id' =>'required',
+            'content' => 'required',
+        ];
+    }
+    public function messages()
+    {
+        return[
+            'name.required' => 'Tên sản phẩm không được để trống',
+            'name.unique' => 'Tên sản phẩm không được trùng lập',
+            'name.max' => 'Tên sản phẩm không quá 255 khí tự',
+            'name.min' => 'Tên sản phẩm không ít hơn 10 kí tự',
+            'price.required' => 'Giá sản phẩm không được để trống',
+            'category_id.required' => 'Danh mục sản phẩm không được để trống',
+            'content.required' => 'Nội dung sản phẩm không được để trống',
         ];
     }
 }

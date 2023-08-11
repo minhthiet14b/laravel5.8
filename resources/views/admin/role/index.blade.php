@@ -1,6 +1,6 @@
 @extends('layout.admin')
 @section('title')
-<title>Trang chu</title>
+<title>Vai trò</title>
 @endsection
 
 @section('js')
@@ -17,33 +17,33 @@
     <div class="container-fluid">
       <div class="row">
           <div class="col-sm-12">
-              <a href="{{ route('categories.create') }}" class="btn btn-success float-right m2">Add</a>
+            <a href="{{ route('roles.create')}}" class="btn btn-success float-right m2">Add</a>
           </div>
           <div class="col-sm-12">
               <table class="table">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col">Tên danh mục</th>
+                      <th scope="col">Tên</th>
+                      <th scope="col">Vai trò</th>
                       <th scope="col">Action</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    @foreach ($categories as  $category)
-                    <tr>
-                      <th scope="row">{{ $category->id }}</th>
-                      <td>{{ $category->name }}</td>
-                      <td>
-                        <a href="{{ route('categories.edit', ['id' => $category->id]) }}" class="btn btn-default ">Edit</a>
-                        <a data-url="{{ route('categories.delete', ['id' => $category->id]) }}" href="" class="btn btn-danger action_delete">Delete</a>
-                      </td>
-                    </tr>
-                    @endforeach
-                  </tbody>
+                  @foreach ($roles as  $role)
+                  <tr>
+                    <th scope="row">{{ $role->id }}</th>
+                    <td>{{ $role->name }}</td>
+                    <td>{{ $role->display_name }}</td>
+                    <td>
+                      <a href="{{ route('roles.edit',['id'=> $role->id])}}" class="btn btn-default">Edit</a>
+                      {{-- <a data-url="{{ route('settings.delete', ['id'=>$setting->id])}}" href="" class="btn btn-danger action_delete" >Delete</a> --}}
+                    </td>
+                  </tr>
+                  @endforeach
                 </table>
           </div>
           <div class="col-sm-12">
-            {{ $categories->links() }}
+            {{ $roles->links() }}
           </div>
       </div>
       <!-- /.row -->

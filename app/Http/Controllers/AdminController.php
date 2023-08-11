@@ -25,6 +25,9 @@ class AdminController extends Controller
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
-
+    }
+    public function logOutAdmin(){
+        auth()->logout();
+        return redirect()->route('login');
     }
 }

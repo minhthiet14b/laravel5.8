@@ -11,7 +11,7 @@
 
 @section('content')
 <div class="content-wrapper">
-    @include('partials.content-header', ['name'=>'Product', 'key'=>'ADD'])
+    @include('partials.content-header', ['name'=>'Product','key'=>'ADD'])
   <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
@@ -21,12 +21,18 @@
                 @csrf
                 <div class="form-group">
                   <label>Tên sản phẩm: </label>
-                  <input type="text" class="form-control" name="name" placeholder="Nhập tên sản phẩm" value="{{ $product->name }}">
+                  <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Nhập tên sản phẩm" value="{{ $product->name }}">
                 </div>
+                @error('name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
                 <div class="form-group">
                     <label>Giá: </label>
-                    <input type="text" class="form-control" name="price" placeholder="Nhập giá sản phẩm" value="{{ $product->price }}">
+                    <input type="text" class="form-control @error('price') is-invalid @enderror" name="price" placeholder="Nhập giá sản phẩm" value="{{ $product->price }}">
                 </div>
+                @error('price')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
                 <div class="form-group">
                     <label>Ảnh đại diện</label>
                     <input type="file" class="form-control-file" name="feature_img_path">
@@ -46,10 +52,13 @@
                 <div class="form-group">
                     <label>Danh mục cha</label>
                     <select class="form-control select2_init" name="category_id">
-                      <option value="0">Chọn danh mục cha</option>
+                      <option value="" class="@error('category_id') is-invalid @enderror">Chọn danh mục cha</option>
                       {!! $htmlOption !!}
                     </select>
                 </div>
+                @error('category_id')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
                 <div class="form-group">
                 <label>Tags</label>
                     <select name="tags[]" class="form-control tags_select_choose" multiple="multiple">
@@ -60,8 +69,11 @@
                 </div>
                 <div class="form-group">
                     <label>Nhập nội dung</label>
-                    <textarea name="content" class="form-control tinymce_editer_init" rows="3">{{ $product->content }}</textarea>
+                    <textarea name="content" class="form-control tinymce_editer_init @error('content') is-invalid @enderror" rows="3">{{ $product->content }}</textarea>
                   </div>
+                  @error('content')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
                 <button type="submit" class="btn btn-primary">Submit</button>
               </form>
         </div>

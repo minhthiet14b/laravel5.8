@@ -11,7 +11,7 @@ class Recusive{
         $this->data = $data;
     }
 
-    public function categoryRecusive($parentId,$id = 0, $text = ''){
+    public function categoryRecursive($parentId,$id = 0, $text = ''){
         foreach ($this->data as $value){
             if ($value['parent_id'] == $id){
                 if( !empty($parentId) && $parentId == $value['id']){
@@ -20,7 +20,7 @@ class Recusive{
                 else{
                     $this->htmlSlelect .= "<option value='". $value['id'] ."'>" . $text . $value['name'] . "</option>";
                 }
-                $this->categoryRecusive($parentId, $value['id'], $text . '--');
+                $this->categoryRecursive($parentId, $value['id'], $text . '--');
             }
         }
         return $this->htmlSlelect;

@@ -6,7 +6,6 @@
 @section('css')
 <link href="{{ asset('vendors\select2\select2.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('admins\product\add\add.css') }}" rel="stylesheet" />
-
 @endsection
 
 @section('content')
@@ -17,31 +16,51 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-10">
+           {{--}} <div class="col-12">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div> --}}
             <form action="{{route('product.store')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                   <label>Tên sản phẩm: </label>
-                  <input type="text" class="form-control" name="name" placeholder="Nhập tên sản phẩm">
+                  <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Nhập tên sản phẩm" value="{{ old('name') }}">
                 </div>
+                @error('name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
                 <div class="form-group">
                     <label>Giá: </label>
-                    <input type="text" class="form-control" name="price" placeholder="Nhập giá sản phẩm">
+                    <input type="text" class="form-control @error('price') is-invalid @enderror" name="price" placeholder="Nhập giá sản phẩm" value="{{ old('price') }}">
                 </div>
+                @error('price')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
                 <div class="form-group">
                     <label>Ảnh đại diện</label>
-                    <input type="file" class="form-control-file" name="feature_img_path" >
+                    <input type="file" class="form-control-file" name="feature_img_path" value="{{ old('feature_img_path') }}">
                 </div>
                 <div class="form-group">
                     <label>Ảnh chi tiết</label>
-                    <input type="file" multiple class="form-control-file" name="img_path[]" >
+                    <input type="file" multiple class="form-control-file" name="img_path[]" value="{{ old('img_path') }}">
                 </div>
                 <div class="form-group">
                     <label>Danh mục cha</label>
                     <select class="form-control select2_init" name="category_id">
-                      <option value="0">Chọn danh mục cha</option>
+                      <option value="" class="@error('category_id') is-invalid @enderror">Chọn danh mục cha</option>
                       {!! $htmlOption !!}
                     </select>
                 </div>
+                @error('category_id')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
                 <div class="form-group">
                 <label>Tags</label>
                     <select name="tags[]" class="form-control tags_select_choose" multiple="multiple">
@@ -49,8 +68,11 @@
                 </div>
                 <div class="form-group">
                     <label>Nhập nội dung</label>
-                    <textarea name="content" class="form-control tinymce_editer_init" rows="3"></textarea>
-                  </div>
+                    <textarea name="content" class="form-control tinymce_editer_init @error('content') is-invalid @enderror" rows="3">{{ old('content') }}</textarea>
+                </div>
+                @error('content')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
                 <button type="submit" class="btn btn-primary">Submit</button>
               </form>
         </div>

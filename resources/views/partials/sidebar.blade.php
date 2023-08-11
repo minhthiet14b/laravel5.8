@@ -23,31 +23,73 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            <a href="{{ route('categories.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Danh mục sản phẩm
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('menus.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Menu
-              </p>
-            </a>
-          </li>
+            @can('category_list')
+                <li class="nav-item">
+                    <a href="{{ route('categories.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-th"></i>
+                    <p>
+                        Danh mục sản phẩm
+                        <span class="right badge badge-danger">New</span>
+                    </p>
+                    </a>
+                </li>
+            @endcan
             <li class="nav-item">
-            <a href="{{ route('product.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Sản phẩm
-              </p>
-            </a>
-          </li>
+                <a href="{{ route('menus.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Menu
+                </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('product.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Sản phẩm
+                </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('slider.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Slider
+                </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('settings.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Settings
+                </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('users.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Danh sách nhân viên
+                </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('roles.index') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Vai trò
+                </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('permissions.create') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Tạo dữ liệu Permission
+                </p>
+                </a>
+            </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

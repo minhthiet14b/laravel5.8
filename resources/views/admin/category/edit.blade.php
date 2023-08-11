@@ -14,15 +14,21 @@
                 @csrf
                 <div class="form-group">
                   <label>Tên danh mục</label>
-                  <input type="text" class="form-control" name="name" placeholder="Nhập tên danh mục" value="{{ $category->name }}">
+                  <input type="text" class="form-control @error('name')@enderror" name="name" placeholder="Nhập tên danh mục" value="{{ $category->name }}">
                 </div>
+                @error('name')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
                 <div class="form-group">
                     <label>Danh mục cha</label>
                     <select class="form-control" name="parent_id">
-                      <option value="0">Chọn danh mục cha</option>
+                      <option value="0" class="@error('parent_id')@enderror">Chọn danh mục cha</option>
                       {!! $htmlOption !!}
                     </select>
                   </div>
+                  @error('parent_id')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
                 <button type="submit" class="btn btn-primary">Submit</button>
               </form>
         </div>

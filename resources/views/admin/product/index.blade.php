@@ -6,11 +6,11 @@
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('admins/product/list.js')}}"></script>
-
 @endsection
+
 @section('content')
 <div class="content-wrapper">
-    @include('partials.content-header', ['name'=>'category', 'key'=>'List'])
+    @include('partials.content-header', ['name'=>'category','key'=>'List'])
 
   <!-- Main content -->
   <div class="content">

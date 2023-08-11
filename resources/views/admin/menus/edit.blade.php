@@ -23,6 +23,10 @@
                       {!! $optionSelect !!}
                     </select>
                   </div>
+                  <div class="col-md-3">
+                    <label></label>
+                    <input type="text" class="form-control" name="name" placeholder="Nhập tên danh mục Menu">
+                  </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
               </form>
         </div>
